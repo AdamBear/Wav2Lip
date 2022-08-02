@@ -154,7 +154,7 @@ def datagen(frames, mels):
 		yield img_batch, mel_batch, frame_batch, coords_batch
 
 mel_step_size = 16
-device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print('Using {} for inference.'.format(device))
 
 def _load(checkpoint_path):
@@ -175,7 +175,8 @@ def load_model(path):
 		new_s[k.replace('module.', '')] = v
 	model.load_state_dict(new_s)
 
-	model = model.to(device)
+	#model = model.to(device)
+	model = model.cuda()
 	return model.eval()
 
 def main():
@@ -256,8 +257,10 @@ def main():
 			out = cv2.VideoWriter('temp/result.avi', 
 									cv2.VideoWriter_fourcc(*'DIVX'), fps, (frame_w, frame_h))
 
-		img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).to(device)
-		mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).to(device)
+		# img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).to(device)
+		# mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).to(device)
+		img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).cuda()
+		mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).cuda()
 
 		with torch.no_grad():
 			pred = model(mel_batch, img_batch)
