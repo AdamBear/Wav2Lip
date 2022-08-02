@@ -175,8 +175,7 @@ def load_model(path):
 		new_s[k.replace('module.', '')] = v
 	model.load_state_dict(new_s)
 
-	#model = model.to(device)
-	model = model.cuda()
+	model = model.to(device)
 	return model.eval()
 
 def main():
@@ -257,10 +256,8 @@ def main():
 			out = cv2.VideoWriter('temp/result.avi', 
 									cv2.VideoWriter_fourcc(*'DIVX'), fps, (frame_w, frame_h))
 
-		# img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).to(device)
-		# mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).to(device)
-		img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).cuda()
-		mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).cuda()
+		img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).to(device)
+		mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).to(device)
 
 		with torch.no_grad():
 			pred = model(mel_batch, img_batch)
