@@ -1,0 +1,50 @@
+- extract all files to your wav2lip root directory
+
+- install imutils to your wav2lip environment
+
+- activate your environment
+
+- run inference_cut_caffe.py
+
+same commandline parameters as original inference.py
+
+example:
+python inference_cut_caffe.py --checkpoint_path C:\Tutorial\wav2lip\checkpoints\wav2lip_gan.pth --face_det_batch_size 1 --wav2lip_batch_size 1 --face "D:\input.mp4" --audio "D:\Vocals.wav" --outfile "D:\input(Vocals).mp4" --nosmooth  --pads 0 10 0 0 --fps 29.97  --pingpong  --preview --align_face
+
+
+additional parameters:
+
+--align_face
+(face-alignment during inference, not that good, +/- 40 degrees tested, may give weird results)
+
+--loop
+(original behaviour - looping the video if audio is longer than video)
+
+--pingpong
+(looping the video back and forth if audio is longer than video)
+
+--preview
+(preview final result during inference)
+
+--no_rotation
+(does not show first video frame  to draw a line parallel to eyes or mouth for coarse face alignment, always draw clockwise)
+(can replace the --rotation parameter which is only 90 degrees clockwise)
+
+--no_caffe
+(use the original face detection if caffe fails)
+
+--img_sequence
+(write output as mp4 and png-sequence to directory 'seq' - will be deleted when  running new inference!)
+
+--face_sequence
+(takes image sequence as input - eg. 0001.png.....)
+---------------------------------
+
+--align_face / default off
+--preview / default off
+--no_rotation / default on
+--loop / default off
+--pingpong / default off
+--no_caffe / default off
+--img_sequence / default off - writes result as image sequence / output to ./seq
+--face_sequence / default off - read numbered image-sequence / filename should be first image name (../000.png)
