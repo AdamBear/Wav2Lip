@@ -532,7 +532,7 @@ def main():
 		## -
    
 		if args.outfile == 'temp/silence.mp4':
-			command = 'ffmpeg.exe -y -f lavfi -i anullsrc -t ' + str(duration) + ' -acodec libmp3lame -ac 2 -ar 44100 -ab 128000 temp/silence.mp3'
+			command = 'ffmpeg -y -f lavfi -i anullsrc -t ' + str(duration) + ' -acodec libmp3lame -ac 2 -ar 44100 -ab 128000 temp/silence.mp3'
 			subprocess.call(command, shell=platform.system() != 'Windows')
 			
 		
@@ -575,7 +575,7 @@ def main():
 	if not args.audio.endswith('.wav'):
 		print('Extracting raw audio...')
 		
-		command = 'ffmpeg.exe -y -i {} -strict -2 {}'.format(args.audio, 'temp/temp.wav')
+		command = 'ffmpeg -y -i {} -strict -2 {}'.format(args.audio, 'temp/temp.wav')
 
 		subprocess.call(command, shell=True)
 		args.audio = 'temp/temp.wav'
