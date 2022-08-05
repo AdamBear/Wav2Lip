@@ -736,7 +736,7 @@ def main():
 				if k == 27:
 					cv2.destroyAllWindows()
 					out.release()
-					command = 'ffmpeg.exe -y -i ' + '"' + args.audio + '"' + ' -i ' + 'temp/temp.mp4' + ' -shortest -vcodec copy -acodec libmp3lame -ac 2 -ar 44100 -ab 128000 -strict -2 -q:v 1 ' + '"' + args.outfile + '"'
+					command = 'ffmpeg -y -i ' + '"' + args.audio + '"' + ' -i ' + 'temp/temp.mp4' + ' -shortest -vcodec copy -acodec libmp3lame -ac 2 -ar 44100 -ab 128000 -strict -2 -q:v 1 ' + '"' + args.outfile + '"'
 					subprocess.call(command, shell=platform.system() != 'Windows')
 				
 					sys.exit()
@@ -747,14 +747,14 @@ def main():
 				if args.outfile == 'temp/silence.mp4':
 					sys.exit()
 				out.release()
-				command = 'ffmpeg.exe -y -i ' + '"' + args.audio + '"' + ' -i ' + 'temp/temp.mp4' + ' -shortest -vcodec copy -acodec libmp3lame -ac 2 -ar 44100 -ab 128000 -strict -2 -q:v 1 ' + '"' + args.outfile + '"'
+				command = 'ffmpeg -y -i ' + '"' + args.audio + '"' + ' -i ' + 'temp/temp.mp4' + ' -shortest -vcodec copy -acodec libmp3lame -ac 2 -ar 44100 -ab 128000 -strict -2 -q:v 1 ' + '"' + args.outfile + '"'
 				
 				subprocess.call(command, shell=platform.system() != 'Windows')
 				sys.exit()
 				
 	out.release()
 	
-	command = 'ffmpeg.exe -y -i ' + '"' + args.audio + '"' + ' -i ' + 'temp/temp.mp4' + ' -shortest -vcodec copy -acodec libmp3lame -ac 2 -ar 44100 -ab 128000 -strict -2 -q:v 1 ' + '"' + args.outfile + '"'
+	command = 'ffmpeg -y -i ' + '"' + args.audio + '"' + ' -i ' + 'temp/temp.mp4' + ' -shortest -vcodec copy -acodec libmp3lame -ac 2 -ar 44100 -ab 128000 -strict -2 -q:v 1 ' + '"' + args.outfile + '"'
 	
 	os.system('cls')
 	subprocess.call(command, shell=platform.system() != 'Windows')
