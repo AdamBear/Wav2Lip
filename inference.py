@@ -178,6 +178,7 @@ def load_model(path):
 	model = model.to(device)
 	return model.eval()
 
+
 def main():
 	if not os.path.isfile(args.face):
 		raise ValueError('--face argument must be a valid path to video/image file')
