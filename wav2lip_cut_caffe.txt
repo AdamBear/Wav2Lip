@@ -9,7 +9,7 @@
 same commandline parameters as original inference.py
 
 example:
-python inference_cut_caffe.py --checkpoint_path C:\Tutorial\wav2lip\checkpoints\wav2lip_gan.pth --face_det_batch_size 1 --wav2lip_batch_size 1 --face "D:\input.mp4" --audio "D:\Vocals.wav" --outfile "D:\input(Vocals).mp4" --nosmooth  --pads 0 10 0 0 --fps 29.97  --pingpong  --preview --align_face
+python inference_cut_caffe.py --checkpoint_path ./checkpoints/wav2lip_gan.pth --face_det_batch_size 1 --wav2lip_batch_size 1 --nosmooth  --pads 0 10 0 0  --pingpong  --preview --align_face --face "/data/input.mp4" --audio "/data/Vocals.wav" --outfile "D:\input(Vocals).mp4"
 
 
 additional parameters:
