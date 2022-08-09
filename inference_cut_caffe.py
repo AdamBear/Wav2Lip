@@ -118,7 +118,7 @@ net = cv2.dnn.readNetFromCaffe('caffemodel/deploy.prototxt.txt', 'caffemodel/res
 alignment = 'cuda' if torch.cuda.is_available() else 'cpu'
 print('Using {} for face alignment.'.format(device))
 fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, device=alignment, flip_input=True,
-                                  face_detector='sfd')  # device='cpu/cuda'
+                                  face_detector='sfd')
 
 if os.path.isfile(args.face) and args.face.split('.')[1] in ['jpg', 'png', 'jpeg']:
     args.static = True
@@ -444,7 +444,7 @@ def main():
     angle = 0
     pre_angle = 0
 
-    os.system("ulimit -n 102400")
+    #os.system("ulimit -n 102400")
 
     # end_mask = cv2.imread('white.jpg')
     # end_mask = 255 * np.ones((96, 96, 3), dtype=np.uint8)
