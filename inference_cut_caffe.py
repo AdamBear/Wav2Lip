@@ -445,8 +445,12 @@ def main():
     global loop
     angle = 0
     pre_angle = 0
+
+
+    os.system("ulimit -n 10240")
+
     # end_mask = cv2.imread('white.jpg')
-    end_mask = 255 * np.ones((96, 96, 3), dtype=np.uint8)
+    # end_mask = 255 * np.ones((96, 96, 3), dtype=np.uint8)
     # cv2.imshow("M",end_mask)
     # cv2.waitKey()
 
