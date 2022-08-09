@@ -435,8 +435,6 @@ def mouse_handler(event, x, y, flags, data):
         ix = x
         iy = y
 
-    ## -
-
 
 def main():
     global ori_face
@@ -446,8 +444,7 @@ def main():
     angle = 0
     pre_angle = 0
 
-
-    os.system("ulimit -n 10240")
+    os.system("ulimit -n 102400")
 
     # end_mask = cv2.imread('white.jpg')
     # end_mask = 255 * np.ones((96, 96, 3), dtype=np.uint8)
