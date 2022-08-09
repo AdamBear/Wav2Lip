@@ -444,6 +444,8 @@ def main():
     angle = 0
     pre_angle = 0
 
+    __import__('ipdb').set_trace()
+
     #os.system("ulimit -n 102400")
 
     # end_mask = cv2.imread('white.jpg')
