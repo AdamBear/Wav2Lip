@@ -165,6 +165,7 @@ class Dataset(object):
             y = torch.FloatTensor(y)
             return x, indiv_mels, mel, y
 
+
 def save_sample_images(x, g, gt, global_step, checkpoint_dir):
     x = (x.detach().cpu().numpy().transpose(0, 2, 3, 4, 1) * 255.).astype(np.uint8)
     g = (g.detach().cpu().numpy().transpose(0, 2, 3, 4, 1) * 255.).astype(np.uint8)

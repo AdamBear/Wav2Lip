@@ -200,7 +200,7 @@ def face_detect_caffe(images):
     results = []
     pady1, pady2, padx1, padx2 = args.pads
 
-    os.system('cls')
+
     print("Detection done")
     frame_count = 0
     fc = 0
@@ -282,7 +282,6 @@ def correct_angle(input_img):
 
 
 def datagen(frames, mels):
-    os.system('cls')
     print("Detecting face...")
     global angle
     global ori_face
@@ -444,7 +443,7 @@ def main():
     angle = 0
     pre_angle = 0
 
-    __import__('ipdb').set_trace()
+    # __import__('ipdb').set_trace()
 
     #os.system("ulimit -n 102400")
 
@@ -728,7 +727,6 @@ def main():
 
     command = 'ffmpeg -y -i ' + '"' + args.audio + '"' + ' -i ' + 'temp/temp.mp4' + ' -shortest -vcodec copy -acodec libmp3lame -ac 2 -ar 44100 -ab 128000 -strict -2 -q:v 1 ' + '"' + args.outfile + '"'
 
-    os.system('cls')
     subprocess.call(command, shell=platform.system() != 'Windows')
 
 
