@@ -501,9 +501,9 @@ def main():
 
         if not args.no_rotation:
             # still_reading, frame = video_stream.read()
-            cv2.imshow("unique_window_identifier", full_frame)
-            pts, final_image = get_points(full_frame)
-            cv2.destroyAllWindows()
+            # cv2.imshow("unique_window_identifier", full_frame)
+            # pts, final_image = get_points(full_frame)
+            # cv2.destroyAllWindows()
             full_frame = imutils.rotate_bound(full_frame, pre_angle)
             full_frames = [full_frame]
 
@@ -529,9 +529,9 @@ def main():
 
         if not args.no_rotation:
             still_reading, frame = video_stream.read()
-            cv2.imshow("unique_window_identifier", frame)
-            pts, final_image = get_points(frame)
-            cv2.destroyAllWindows()
+            #cv2.imshow("unique_window_identifier", frame)
+            #pts, final_image = get_points(frame)
+            #cv2.destroyAllWindows()
 
         ## -
 
