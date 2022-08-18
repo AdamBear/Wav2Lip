@@ -32,7 +32,7 @@ parser.add_argument('--face_det_batch_size', type=int,
 					help='Batch size for face detection', default=16)
 parser.add_argument('--wav2lip_batch_size', type=int, help='Batch size for Wav2Lip model(s)', default=128)
 
-parser.add_argument('--resize_factor', default=1, type=int, 
+parser.add_argument('--resize_factor', default=1.0, type=float,
 			help='Reduce the resolution by this factor. Sometimes, best results are obtained at 480p or 720p')
 
 parser.add_argument('--crop', nargs='+', type=int, default=[0, -1, 0, -1], 
@@ -77,7 +77,7 @@ def face_detect(images):
 			for i in tqdm(range(0, len(images), batch_size)):
 				predictions.extend(detector.get_detections_for_batch(np.array(images[i:i + batch_size])))
 		except RuntimeError:
-			if batch_size == 1: 
+			if batch_size == 1:
 				raise RuntimeError('Image too big to run face detection on GPU. Please use the --resize_factor argument')
 			batch_size //= 2
 			print('Recovering from OOM error; New batch size: {}'.format(batch_size))
@@ -199,7 +199,7 @@ def main():
 			if not still_reading:
 				video_stream.release()
 				break
-			if args.resize_factor > 1:
+			if args.resize_factor != 1.0:
 				frame = cv2.resize(frame, (frame.shape[1]//args.resize_factor, frame.shape[0]//args.resize_factor))
 
 			if args.rotate:
