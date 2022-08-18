@@ -66,7 +66,7 @@ parser.add_argument('--face_det_batch_size', type=int, help='Batch size for face
 # no more functional / set to 1					
 parser.add_argument('--wav2lip_batch_size', type=int, help='Batch size for Wav2Lip model(s)', default=1)  # 128
 
-parser.add_argument('--resize_factor', default=1, type=int,
+parser.add_argument('--resize_factor', default=1.0, type=float,
                     help='Reduce the resolution by this factor. Sometimes, best results are obtained at 480p or 720p')
 
 parser.add_argument('--crop', nargs='+', type=int, default=[0, -1, 0, -1],
@@ -549,7 +549,7 @@ def main():
             if not still_reading:
                 video_stream.release()
                 break
-            if args.resize_factor > 1:
+            if args.resize_factor != 1.0:
                 frame = cv2.resize(frame, (frame.shape[1] // args.resize_factor, frame.shape[0] // args.resize_factor))
 
             # if args.rotate:
