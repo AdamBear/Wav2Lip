@@ -279,8 +279,6 @@ if __name__ == "__main__":
     if not os.path.exists(filelists_path):
         create_filelists(args.data_root, filelists_path)
 
-    exit(-1)
-
     # Dataset and Dataloader setup
     train_dataset = Dataset('train')
     test_dataset = Dataset('val')
