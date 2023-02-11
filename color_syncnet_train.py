@@ -205,12 +205,12 @@ def eval_model(test_data_loader, global_step, device, model, checkpoint_dir):
             loss = cosine_loss(a, v, y)
             losses.append(loss.item())
         step += 1
-        if step > eval_steps: break
+        if step >= eval_steps: break
 
-        averaged_loss = sum(losses) / len(losses)
-        print("avg loss", averaged_loss)
+    averaged_loss = sum(losses) / len(losses)
+    print("avg loss", averaged_loss)
 
-        return
+    return
 
 def save_checkpoint(model, optimizer, step, checkpoint_dir, epoch):
 
