@@ -6,7 +6,7 @@ filelists_path = "./filelists"
 def get_image_list(data_root, split):
 	filelist = []
 
-	with open('{filelists_path}/{}.txt'.format(filelists_path, split)) as f:
+	with open('{}/{}.txt'.format(filelists_path, split)) as f:
 		for line in f:
 			line = line.strip()
 			if ' ' in line: line = line.split()[0]
