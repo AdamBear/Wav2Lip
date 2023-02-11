@@ -191,7 +191,7 @@ def eval_model(test_data_loader, global_step, device, model, checkpoint_dir):
     losses = []
     step = 1
     while 1:
-        for x, mel, y in test_data_loader:
+        for x, mel, y in tqdm(test_data_loader):
             model.eval()
 
             # Transform data to CUDA device
