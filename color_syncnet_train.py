@@ -89,7 +89,7 @@ class Dataset(object):
                 y = torch.zeros(1).float()
                 chosen = wrong_img_name
 
-            key = idx + img_name + wrong_img_name
+            key = idx + "_" + str(img_name) + "_" + str(wrong_img_name)
             if key not in self.cache:
                 window_fnames = self.get_window(chosen)
                 if window_fnames is None:
