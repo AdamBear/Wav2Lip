@@ -39,8 +39,8 @@ syncnet_T = 5
 syncnet_mel_step_size = 16
 
 class Dataset(object):
-    def __init__(self, split):
-        self.all_videos = get_image_list(args.data_root, split)
+    def __init__(self, split, filelists_path):
+        self.all_videos = get_image_list(args.data_root, split, filelists_path)
 
     def get_frame_id(self, frame):
         return int(basename(frame).split('.')[0])
@@ -338,11 +338,10 @@ def load_checkpoint(path, model, optimizer, reset_optimizer=False, overwrite_glo
 
 if __name__ == "__main__":
     checkpoint_dir = args.checkpoint_dir
-    hparams.filelists_path = args.filelists_path
 
     # Dataset and Dataloader setup
-    train_dataset = Dataset('train')
-    test_dataset = Dataset('val')
+    train_dataset = Dataset('train', args.filelists_path)
+    test_dataset = Dataset('val', args.filelists_path)
 
     print('data train len {}'.format(len(train_dataset)))
 

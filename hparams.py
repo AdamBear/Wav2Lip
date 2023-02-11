@@ -1,9 +1,7 @@
 from glob import glob
 import os
 
-filelists_path = "./filelists"
-
-def get_image_list(data_root, split):
+def get_image_list(data_root, split, filelists_path):
 	filelist = []
 
 	with open('{}/{}.txt'.format(filelists_path, split)) as f:
