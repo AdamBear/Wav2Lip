@@ -14,7 +14,7 @@ import numpy as np
 from glob import glob
 
 import os, random, cv2, argparse
-from hparams import hparams, get_image_list
+from hparams import hparams, get_image_list, filelists_path
 
 parser = argparse.ArgumentParser(description='Code to train the expert lip-sync discriminator')
 
@@ -22,6 +22,7 @@ parser.add_argument("--data_root", help="Root folder of the preprocessed LRS2 da
 
 parser.add_argument('--checkpoint_dir', help='Save checkpoints to this directory', required=True, type=str)
 parser.add_argument('--checkpoint_path', help='Resumed from this checkpoint', default=None, type=str)
+parser.add_argument('--filelists_path', help='filelists for train and eval', default="./filelists", type=str)
 
 args = parser.parse_args()
 
@@ -243,11 +244,42 @@ def load_checkpoint(path, model, optimizer, reset_optimizer=False):
 
     return model
 
+
+def create_filelists(data_root, list_path):
+    train_files = []
+    val_files = []
+
+    l = glob(os.path.join(data_root, "*/*"))
+    random.shuffle(l)
+
+    sub_num_dev = int(len(l) * 0.02)
+    if sub_num_dev < 2:
+        sub_num_dev = 1
+
+    train_files += l[:-sub_num_dev]
+    val_files += l[-sub_num_dev:]
+
+    with open(os.path.join(list_path, "train.txt"), "w") as f:
+        for s in train_files:
+            f.write(s + "\n")
+
+    with open(os.path.join(list_path, "val.txt"), "w") as f:
+        for s in val_files:
+            f.write(s + "\n")
+
+
 if __name__ == "__main__":
+
     checkpoint_dir = args.checkpoint_dir
     checkpoint_path = args.checkpoint_path
+    filelists_path = args.filelists_path
 
     if not os.path.exists(checkpoint_dir): os.mkdir(checkpoint_dir)
+
+    if not os.path.exists(filelists_path):
+        create_filelists(args.data_root, filelists_path)
+
+    exit(-1)
 
     # Dataset and Dataloader setup
     train_dataset = Dataset('train')
