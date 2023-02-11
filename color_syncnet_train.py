@@ -37,6 +37,7 @@ syncnet_mel_step_size = 16
 
 class Dataset(object):
     def __init__(self, split, filelists_path):
+        self.cache = {}
         self.all_videos = get_image_list(args.data_root, split, filelists_path)
 
     def get_frame_id(self, frame):
@@ -70,66 +71,69 @@ class Dataset(object):
     def __getitem__(self, idx):
         while 1:
             idx = random.randint(0, len(self.all_videos) - 1)
-            vidname = self.all_videos[idx]
+            if idx not in self.cache:
+                vidname = self.all_videos[idx]
 
-            img_names = list(glob(join(vidname, '*.jpg')))
-            if len(img_names) <= 3 * syncnet_T:
-                continue
-            img_name = random.choice(img_names)
-            wrong_img_name = random.choice(img_names)
-            while wrong_img_name == img_name:
+                img_names = list(glob(join(vidname, '*.jpg')))
+                if len(img_names) <= 3 * syncnet_T:
+                    continue
+                img_name = random.choice(img_names)
                 wrong_img_name = random.choice(img_names)
+                while wrong_img_name == img_name:
+                    wrong_img_name = random.choice(img_names)
 
-            if random.choice([True, False]):
-                y = torch.ones(1).float()
-                chosen = img_name
-            else:
-                y = torch.zeros(1).float()
-                chosen = wrong_img_name
+                if random.choice([True, False]):
+                    y = torch.ones(1).float()
+                    chosen = img_name
+                else:
+                    y = torch.zeros(1).float()
+                    chosen = wrong_img_name
 
-            window_fnames = self.get_window(chosen)
-            if window_fnames is None:
-                continue
+                window_fnames = self.get_window(chosen)
+                if window_fnames is None:
+                    continue
 
-            window = []
-            all_read = True
-            for fname in window_fnames:
-                img = cv2.imread(fname)
-                if img is None:
-                    all_read = False
-                    break
+                window = []
+                all_read = True
+                for fname in window_fnames:
+                    img = cv2.imread(fname)
+                    if img is None:
+                        all_read = False
+                        break
+                    try:
+                        img = cv2.resize(img, (hparams.img_size, hparams.img_size))
+                    except Exception as e:
+                        all_read = False
+                        break
+
+                    window.append(img)
+
+                if not all_read: continue
+
                 try:
-                    img = cv2.resize(img, (hparams.img_size, hparams.img_size))
+                    wavpath = join(vidname, "audio.wav")
+                    wav = audio.load_wav(wavpath, hparams.sample_rate)
+
+                    orig_mel = audio.melspectrogram(wav).T
                 except Exception as e:
-                    all_read = False
-                    break
+                    continue
 
-                window.append(img)
+                mel = self.crop_audio_window(orig_mel.copy(), img_name)
 
-            if not all_read: continue
+                if (mel.shape[0] != syncnet_mel_step_size):
+                    continue
 
-            try:
-                wavpath = join(vidname, "audio.wav")
-                wav = audio.load_wav(wavpath, hparams.sample_rate)
+                # H x W x 3 * T
+                x = np.concatenate(window, axis=2) / 255.
+                x = x.transpose(2, 0, 1)
+                x = x[:, x.shape[1]//2:]
 
-                orig_mel = audio.melspectrogram(wav).T
-            except Exception as e:
-                continue
-
-            mel = self.crop_audio_window(orig_mel.copy(), img_name)
-
-            if (mel.shape[0] != syncnet_mel_step_size):
-                continue
-
-            # H x W x 3 * T
-            x = np.concatenate(window, axis=2) / 255.
-            x = x.transpose(2, 0, 1)
-            x = x[:, x.shape[1]//2:]
-
-            x = torch.FloatTensor(x)
-            mel = torch.FloatTensor(mel.T).unsqueeze(0)
-
-            return x, mel, y
+                x = torch.FloatTensor(x)
+                mel = torch.FloatTensor(mel.T).unsqueeze(0)
+                self.cache[idx] = (x, mel, y)
+                return x, mel, y
+            else:
+                return self.cache[idx]
 
 logloss = nn.BCELoss()
 def cosine_loss(a, v, y):
