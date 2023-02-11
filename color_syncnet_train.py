@@ -184,12 +184,12 @@ def train(device, model, train_data_loader, test_data_loader, optimizer,
         global_epoch += 1
 
 def eval_model(test_data_loader, global_step, device, model, checkpoint_dir):
-    eval_steps = 10
+    eval_steps = 100
     print('Evaluating for {} steps'.format(eval_steps))
     losses = []
+    step = 1
     while 1:
-        for step, (x, mel, y) in enumerate(test_data_loader):
-
+        for x, mel, y in enumerate(test_data_loader):
             model.eval()
 
             # Transform data to CUDA device
@@ -202,7 +202,7 @@ def eval_model(test_data_loader, global_step, device, model, checkpoint_dir):
 
             loss = cosine_loss(a, v, y)
             losses.append(loss.item())
-
+            step += 1
             if step > eval_steps: break
 
         averaged_loss = sum(losses) / len(losses)
