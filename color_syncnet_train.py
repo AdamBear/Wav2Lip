@@ -14,7 +14,7 @@ import numpy as np
 from glob import glob
 
 import os, random, cv2, argparse
-from hparams import hparams, get_image_list, filelists_path
+from hparams import hparams, get_image_list
 
 parser = argparse.ArgumentParser(description='Code to train the expert lip-sync discriminator')
 
