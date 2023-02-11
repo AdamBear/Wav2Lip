@@ -283,6 +283,8 @@ if __name__ == "__main__":
     train_dataset = Dataset('train')
     test_dataset = Dataset('val')
 
+    print('data train len {}'.format(len(train_dataset)))
+
     train_data_loader = data_utils.DataLoader(
         train_dataset, batch_size=hparams.syncnet_batch_size, shuffle=True,
         num_workers=hparams.num_workers)
