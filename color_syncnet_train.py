@@ -275,8 +275,8 @@ if __name__ == "__main__":
 
     if not os.path.exists(checkpoint_dir): os.mkdir(checkpoint_dir)
 
-    if not os.path.exists(filelists_path):
-        create_filelists(args.data_root, filelists_path)
+    if not os.path.exists(args.filelists_path):
+        create_filelists(args.data_root, args.filelists_path)
 
     # Dataset and Dataloader setup
     train_dataset = Dataset('train', args.filelists_path)
