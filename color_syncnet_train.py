@@ -71,24 +71,26 @@ class Dataset(object):
     def __getitem__(self, idx):
         while 1:
             idx = random.randint(0, len(self.all_videos) - 1)
-            if idx not in self.cache:
-                vidname = self.all_videos[idx]
 
-                img_names = list(glob(join(vidname, '*.jpg')))
-                if len(img_names) <= 3 * syncnet_T:
-                    continue
-                img_name = random.choice(img_names)
+            vidname = self.all_videos[idx]
+
+            img_names = list(glob(join(vidname, '*.jpg')))
+            if len(img_names) <= 3 * syncnet_T:
+                continue
+            img_name = random.choice(img_names)
+            wrong_img_name = random.choice(img_names)
+            while wrong_img_name == img_name:
                 wrong_img_name = random.choice(img_names)
-                while wrong_img_name == img_name:
-                    wrong_img_name = random.choice(img_names)
 
-                if random.choice([True, False]):
-                    y = torch.ones(1).float()
-                    chosen = img_name
-                else:
-                    y = torch.zeros(1).float()
-                    chosen = wrong_img_name
+            if random.choice([True, False]):
+                y = torch.ones(1).float()
+                chosen = img_name
+            else:
+                y = torch.zeros(1).float()
+                chosen = wrong_img_name
 
+            key = idx + img_name + wrong_img_name
+            if key not in self.cache:
                 window_fnames = self.get_window(chosen)
                 if window_fnames is None:
                     continue
@@ -130,10 +132,10 @@ class Dataset(object):
 
                 x = torch.FloatTensor(x)
                 mel = torch.FloatTensor(mel.T).unsqueeze(0)
-                self.cache[idx] = (x, mel, y)
+                self.cache[key] = (x, mel, y)
                 return x, mel, y
             else:
-                return self.cache[idx]
+                return self.cache[key]
 
 logloss = nn.BCELoss()
 def cosine_loss(a, v, y):
@@ -184,7 +186,7 @@ def train(device, model, train_data_loader, test_data_loader, optimizer,
         global_epoch += 1
 
 def eval_model(test_data_loader, global_step, device, model, checkpoint_dir):
-    eval_steps = 10
+    eval_steps = 3
     print('Evaluating for {} steps'.format(eval_steps))
     losses = []
     step = 1
@@ -287,6 +289,7 @@ if __name__ == "__main__":
     test_dataset = Dataset('val', args.filelists_path)
 
     print('data train len {}'.format(len(train_dataset)))
+    print('data test len {}'.format(len(test_dataset)))
 
     train_data_loader = data_utils.DataLoader(
         train_dataset, batch_size=hparams.syncnet_batch_size, shuffle=True,
