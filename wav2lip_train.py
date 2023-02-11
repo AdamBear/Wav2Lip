@@ -15,7 +15,7 @@ import numpy as np
 from glob import glob
 
 import os, random, cv2, argparse
-from hparams import hparams, get_image_list
+from hparams import hparams, get_image_list, filelists_path
 
 parser = argparse.ArgumentParser(description='Code to train the Wav2Lip model without the visual quality discriminator')
 
@@ -25,6 +25,7 @@ parser.add_argument('--checkpoint_dir', help='Save checkpoints to this directory
 parser.add_argument('--syncnet_checkpoint_path', help='Load the pre-trained Expert discriminator', required=True, type=str)
 
 parser.add_argument('--checkpoint_path', help='Resume from this checkpoint', default=None, type=str)
+parser.add_argument('--filelists_path', help='filelists for train and eval', default="./filelists", type=str)
 
 args = parser.parse_args()
 
@@ -337,7 +338,7 @@ def load_checkpoint(path, model, optimizer, reset_optimizer=False, overwrite_glo
 
 if __name__ == "__main__":
     checkpoint_dir = args.checkpoint_dir
-
+    filelists_path = args.filelists_path
     # Dataset and Dataloader setup
     train_dataset = Dataset('train')
     test_dataset = Dataset('val')

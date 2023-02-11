@@ -78,7 +78,6 @@ def process_audio_file(vfile, args):
 	command = template.format(vfile, wavpath)
 	subprocess.call(command, shell=True)
 
-	
 def mp_handler(job):
 	vfile, args, gpu_id = job
 	try:

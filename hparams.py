@@ -1,10 +1,12 @@
 from glob import glob
 import os
 
+filelists_path = "./filelists"
+
 def get_image_list(data_root, split):
 	filelist = []
 
-	with open('filelists/{}.txt'.format(split)) as f:
+	with open('{filelists_path}/{}.txt'.format(split)) as f:
 		for line in f:
 			line = line.strip()
 			if ' ' in line: line = line.split()[0]
