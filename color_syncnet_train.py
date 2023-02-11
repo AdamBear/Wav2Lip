@@ -272,7 +272,7 @@ if __name__ == "__main__":
 
     checkpoint_dir = args.checkpoint_dir
     checkpoint_path = args.checkpoint_path
-    filelists_path = args.filelists_path
+    hparams.filelists_path = args.filelists_path
 
     if not os.path.exists(checkpoint_dir): os.mkdir(checkpoint_dir)
 

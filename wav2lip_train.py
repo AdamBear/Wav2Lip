@@ -338,7 +338,7 @@ def load_checkpoint(path, model, optimizer, reset_optimizer=False, overwrite_glo
 
 if __name__ == "__main__":
     checkpoint_dir = args.checkpoint_dir
-    filelists_path = args.filelists_path
+    hparams.filelists_path = args.filelists_path
 
     # Dataset and Dataloader setup
     train_dataset = Dataset('train')
